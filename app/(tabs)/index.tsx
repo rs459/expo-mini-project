@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 export default function Index() {
   const [userProfile, setUserProfile] = useState({
@@ -27,39 +28,43 @@ export default function Index() {
   }
 
   return (
-    <View style={s.container}>
-      <Text
-        accessibilityRole="header"
-        style={s.header}
-        ref={testRef}
-        accessible={true}
-      >
-        Profil
-      </Text>
-      <Profile
-        isEditing={isEditing}
-        profile={userProfile}
-        setUserProfile={setUserProfile}
-        setExperience={setExperience}
-      />
-      <TouchableOpacity
-        onPress={() => {
-          setIsEditing(!isEditing);
-          if (testRef.current) {
-            const reactTag = findNodeHandle(testRef.current);
-            if (reactTag) {
-              AccessibilityInfo.setAccessibilityFocus(reactTag);
-            }
-          }
-        }}
-        accessibilityRole="button"
-        accessibilityHint="Modifier l'état d'édition du profil"
-        style={s.button}
-      >
-        <Text style={s.buttonText}>
-          {isEditing ? "Terminer l'édition" : "Modifier le profil"}
-        </Text>
-      </TouchableOpacity>
-    </View>
+    <SafeAreaProvider>
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={s.container}>
+          <Text
+            accessibilityRole="header"
+            style={s.header}
+            ref={testRef}
+            accessible={true}
+          >
+            Profil
+          </Text>
+          <Profile
+            isEditing={isEditing}
+            profile={userProfile}
+            setUserProfile={setUserProfile}
+            setExperience={setExperience}
+          />
+          <TouchableOpacity
+            onPress={() => {
+              setIsEditing(!isEditing);
+              if (testRef.current) {
+                const reactTag = findNodeHandle(testRef.current);
+                if (reactTag) {
+                  AccessibilityInfo.setAccessibilityFocus(reactTag);
+                }
+              }
+            }}
+            accessibilityRole="button"
+            accessibilityHint="Modifier l'état d'édition du profil"
+            style={s.button}
+          >
+            <Text style={s.buttonText}>
+              {isEditing ? "Terminer l'édition" : "Modifier le profil"}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }

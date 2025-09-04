@@ -22,6 +22,15 @@ export default function TabLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="testnativewind"
+        options={{
+          title: "NativeWind",
+          tabBarIcon: ({ color }) => (
+            <FontAwesome size={28} name="gear" color={color} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }

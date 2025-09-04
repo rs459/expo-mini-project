@@ -43,7 +43,7 @@ export default function Profile({
           onChangeText={(text) =>
             setUserProfile({ ...profile, lastname: text })
           }
-          accessibilityLabel="Nom"
+          accessibilityLabel="test"
         />
       </View>
       <View>
