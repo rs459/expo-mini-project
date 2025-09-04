@@ -1,4 +1,3 @@
-import { styles as s } from "@/App.styles";
 import HobbyList from "@/component/HobbyList";
 import { useState } from "react";
 import {
@@ -8,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Hobbies() {
   const [inputValue, setInputValue] = useState("");
@@ -41,34 +40,35 @@ export default function Hobbies() {
   }
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView>
-        <ScrollView>
-          <View style={s.container}>
-            <View>
-              <Text style={s.header} accessibilityRole="header">
-                Hobbies
-              </Text>
-            </View>
+    <SafeAreaView className="flex-1 bg-gray-50">
+      <ScrollView>
+        <View className="p-4">
+          <Text
+            className="text-4xl font-extrabold text-center my-6 text-gray-900"
+            accessibilityRole="header"
+          >
+            Mes Hobbies
+          </Text>
+          <View className="flex-row mb-6">
             <TextInput
-              style={s.input}
+              className="flex-1 h-12 border border-gray-300 rounded-lg p-3 text-base focus:border-blue-500 mr-2"
+              placeholder="Ajouter un nouveau hobby..."
               value={inputValue}
               onChangeText={setInputValue}
               accessibilityLabel="Nouveau hobby"
             />
             <TouchableOpacity
-              style={s.button}
+              className="bg-blue-600 px-6 rounded-lg items-center justify-center shadow-md active:bg-blue-700"
               onPress={addHobby}
               accessibilityRole="button"
-              accessibilityLabel="Ajouter un hobby"
+              accessibilityLabel="Ajouter le hobby"
             >
-              <Text style={s.buttonText}>Ajouter un hobby</Text>
+              <Text className="text-white font-bold">Ajouter</Text>
             </TouchableOpacity>
-            {/* <HobbyList hobbies={hobbyList} setHobbies={setHobbyList} /> */}
-            <HobbyList hobbies={hobbyList} setHobbies={setHobbyList} />
           </View>
-        </ScrollView>
-      </SafeAreaView>
-    </SafeAreaProvider>
+          <HobbyList hobbies={hobbyList} setHobbies={setHobbyList} />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }

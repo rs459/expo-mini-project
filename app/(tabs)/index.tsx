@@ -1,4 +1,3 @@
-import { styles as s } from "@/App.styles";
 import Profile from "@/component/Profile";
 import { useRef, useState } from "react";
 import {
@@ -8,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Index() {
   const [userProfile, setUserProfile] = useState({
@@ -19,52 +18,52 @@ export default function Index() {
   });
 
   const [isEditing, setIsEditing] = useState(false);
-
-  const testRef = useRef(null);
+  const headerRef = useRef(null);
 
   function setExperience(value: number): void {
     setUserProfile((prev) => ({ ...prev, exp: value }));
-    AccessibilityInfo.announceForAccessibility(`Expérience : ${value} ans`);
+    AccessibilityInfo.announceForAccessibility(
+      `Expérience mise à jour à ${value} ans.`
+    );
   }
 
+  const handleEditPress = () => {
+    setIsEditing((prev) => !prev);
+    if (headerRef.current) {
+      const reactTag = findNodeHandle(headerRef.current);
+      if (reactTag) {
+        AccessibilityInfo.setAccessibilityFocus(reactTag);
+      }
+    }
+  };
+
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={{ flex: 1 }}>
-        <View style={s.container}>
-          <Text
-            accessibilityRole="header"
-            style={s.header}
-            ref={testRef}
-            accessible={true}
-          >
-            Profil
+    <SafeAreaView className="flex-1 bg-gray-50 items-center p-4">
+      <View className="w-full flex-row justify-between items-center mb-6">
+        <Text
+          accessibilityRole="header"
+          className="text-4xl font-extrabold text-gray-900"
+          ref={headerRef}
+        >
+          Profil
+        </Text>
+        <TouchableOpacity
+          onPress={handleEditPress}
+          accessibilityRole="button"
+          accessibilityHint="Basculer entre les modes de visualisation et d'édition du profil"
+          className="bg-blue-600 px-6 py-3 rounded-lg shadow-md active:bg-blue-700"
+        >
+          <Text className="text-white font-bold">
+            {isEditing ? "Terminer" : "Modifier"}
           </Text>
-          <Profile
-            isEditing={isEditing}
-            profile={userProfile}
-            setUserProfile={setUserProfile}
-            setExperience={setExperience}
-          />
-          <TouchableOpacity
-            onPress={() => {
-              setIsEditing(!isEditing);
-              if (testRef.current) {
-                const reactTag = findNodeHandle(testRef.current);
-                if (reactTag) {
-                  AccessibilityInfo.setAccessibilityFocus(reactTag);
-                }
-              }
-            }}
-            accessibilityRole="button"
-            accessibilityHint="Modifier l'état d'édition du profil"
-            style={s.button}
-          >
-            <Text style={s.buttonText}>
-              {isEditing ? "Terminer l'édition" : "Modifier le profil"}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </SafeAreaView>
-    </SafeAreaProvider>
+        </TouchableOpacity>
+      </View>
+      <Profile
+        isEditing={isEditing}
+        profile={userProfile}
+        setUserProfile={setUserProfile}
+        setExperience={setExperience}
+      />
+    </SafeAreaView>
   );
 }

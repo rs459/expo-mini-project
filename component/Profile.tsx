@@ -1,4 +1,3 @@
-import { styles as s } from "@/App.styles";
 import { Image, Text, TextInput, View } from "react-native";
 import { ExpMeter } from "./ExpMeter";
 
@@ -23,88 +22,79 @@ export default function Profile({
   setExperience,
 }: ProfileProps) {
   return isEditing ? (
-    <View style={{ width: "80%" }}>
-      <View>
-        <Text>Prénom :</Text>
+    <View
+      className="w-full p-4 bg-white rounded-lg shadow-lg"
+      accessibilityLabel="Formulaire d'édition de profil"
+    >
+      <View className="mb-4">
+        <Text className="text-gray-700 font-semibold mb-1">Prénom :</Text>
         <TextInput
-          style={s.input}
+          className="h-12 border border-gray-300 rounded-lg p-3 text-base focus:border-blue-500"
           value={profile.firstname}
           onChangeText={(text) =>
             setUserProfile({ ...profile, firstname: text })
           }
-          accessibilityLabel="Prénom"
+          accessibilityLabel="Champ de saisie du prénom"
         />
       </View>
-      <View>
-        <Text>Nom :</Text>
+      <View className="mb-4">
+        <Text className="text-gray-700 font-semibold mb-1">Nom :</Text>
         <TextInput
-          style={s.input}
+          className="h-12 border border-gray-300 rounded-lg p-3 text-base focus:border-blue-500"
           value={profile.lastname}
           onChangeText={(text) =>
             setUserProfile({ ...profile, lastname: text })
           }
-          accessibilityLabel="test"
+          accessibilityLabel="Champ de saisie du nom"
         />
       </View>
-      <View>
-        <Text>Expérience :</Text>
+      <View className="mb-4">
+        <Text className="text-gray-700 font-semibold mb-1">Expérience :</Text>
         <TextInput
-          style={s.input}
+          className="h-12 border border-gray-300 rounded-lg p-3 text-base focus:border-blue-500"
           value={profile.exp.toString()}
           onChangeText={(text) =>
             setUserProfile({ ...profile, exp: parseInt(text) || 0 })
           }
-          accessibilityLabel="Expérience"
+          accessibilityLabel="Champ de saisie de l'expérience en années"
           keyboardType="numeric"
         />
       </View>
-      <View>
-        <Text>Image :</Text>
+      <View className="mb-4">
+        <Text className="text-gray-700 font-semibold mb-1">Image (URL) :</Text>
         <TextInput
-          style={s.input}
+          className="h-12 border border-gray-300 rounded-lg p-3 text-base focus:border-blue-500"
           value={profile.image}
           onChangeText={(text) => setUserProfile({ ...profile, image: text })}
-          accessibilityLabel="Image"
+          accessibilityLabel="Champ de saisie de l'URL de l'image"
         />
       </View>
     </View>
   ) : (
     <View
-      accessibilityLabel="Informations du profil"
-      style={{ width: "80%", alignItems: "center" }}
+      accessibilityLabel="Informations du profil de Jean Brouille"
+      className="w-full items-center p-6 bg-white rounded-lg shadow-lg"
     >
-      <View>
-        <Text
-          style={[s.text, s.pad1]}
-          accessibilityLabel={`Prénom : ${profile.firstname}`}
-        >
-          {profile.firstname}
-        </Text>
-        <Text
-          style={[s.text, s.pad1]}
-          accessibilityLabel={`Nom : ${profile.lastname}`}
-        >
-          {profile.lastname}
-        </Text>
+      <View className="items-center mb-6">
         <Image
-          source={{
-            uri: profile.image,
-          }}
-          style={s.image}
+          source={{ uri: profile.image }}
+          className="w-32 h-32 rounded-full mb-4"
           accessibilityLabel="Photo de profil"
         />
-      </View>
-      <View>
         <Text
-          style={s.text}
+          className="text-3xl font-bold text-gray-900 mb-1"
+          accessibilityRole="header"
+        >
+          {profile.firstname} {profile.lastname}
+        </Text>
+        <Text
+          className="text-lg text-gray-600"
           accessibilityLabel={`Expérience : ${profile.exp} ans`}
         >
           Expérience : {profile.exp} ans
         </Text>
       </View>
-      <View>
-        <ExpMeter setExperience={setExperience} exp={profile.exp} />
-      </View>
+      <ExpMeter setExperience={setExperience} exp={profile.exp} />
     </View>
   );
 }

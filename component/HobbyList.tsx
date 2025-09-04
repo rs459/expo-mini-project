@@ -1,53 +1,61 @@
-import { styles as s } from "@/App.styles";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Alert, Text, TouchableOpacity, View } from "react-native";
 
 export interface HobbyListProps {
   hobbies: string[];
   setHobbies: (value: string[]) => void;
 }
 
-export default function HobbyList({
-  hobbies,
-  setHobbies,
-}: {
-  hobbies: string[];
-  setHobbies: (value: string[]) => void;
-}) {
+export default function HobbyList({ hobbies, setHobbies }: HobbyListProps) {
+  const removeHobby = (hobbyToRemove: string) => {
+    Alert.alert(
+      "Confirmer la suppression",
+      `Êtes-vous sûr de vouloir supprimer "${hobbyToRemove}" ?`,
+      [
+        {
+          text: "Annuler",
+          style: "cancel",
+        },
+        {
+          text: "Supprimer",
+          onPress: () => {
+            const newList = hobbies.filter((h) => h !== hobbyToRemove);
+            setHobbies(newList);
+          },
+          style: "destructive",
+        },
+      ]
+    );
+  };
+
   return (
-    <View>
-      <View accessibilityRole="list" style={{ margin: 16 }}>
-        {hobbies.map((hobby, index) => (
+    <View
+      className="p-2 border border-gray-200 rounded-lg bg-gray-50"
+      accessibilityRole="list"
+    >
+      {hobbies.length === 0 ? (
+        <Text className="text-center text-gray-500 my-4">
+          Aucun hobby pour le moment.
+        </Text>
+      ) : (
+        hobbies.map((hobby, index) => (
           <View
             key={index}
-            role="listitem"
-            style={{
-              width: "100%",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginVertical: 8,
-              borderRadius: 8,
-              backgroundColor: "#f4f4f4ff",
-              padding: 8,
-            }}
+            className="w-full flex-row justify-between items-center my-2 p-4 rounded-lg bg-white shadow-md"
           >
-            <Text>{hobby}</Text>
+            <Text className="text-base text-gray-700 font-semibold">
+              {hobby}
+            </Text>
             <TouchableOpacity
-              style={s.button}
-              onPress={() => {
-                setHobbies(hobbies.filter((h) => h !== hobby));
-              }}
+              onPress={() => removeHobby(hobby)}
+              accessibilityRole="button"
+              accessibilityLabel={`Supprimer le hobby ${hobby}`}
+              className="p-2 ml-4 bg-red-500 rounded-xl"
             >
-              <Text
-                style={{ color: "red", fontSize: 18 }}
-                accessibilityLabel={`Supprimer le hobby ${hobby}`}
-              >
-                X
-              </Text>
+              <Text className="text-white text-lg font-bold">X</Text>
             </TouchableOpacity>
           </View>
-        ))}
-      </View>
+        ))
+      )}
     </View>
   );
 }

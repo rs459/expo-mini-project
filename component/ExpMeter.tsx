@@ -1,4 +1,3 @@
-import { styles as s } from "@/App.styles";
 import { FontAwesome } from "@expo/vector-icons";
 import { TouchableOpacity, View } from "react-native";
 
@@ -9,29 +8,23 @@ interface ExpMeterProps {
 
 export function ExpMeter({ setExperience, exp }: ExpMeterProps) {
   return (
-    <View
-      style={{
-        flexDirection: "row",
-        justifyContent: "space-around",
-        marginVertical: 32,
-        gap: 32,
-      }}
-    >
+    <View className="flex-row justify-center items-center my-8">
       <TouchableOpacity
         onPress={() => setExperience(exp + 1)}
         accessibilityRole="button"
         accessibilityLabel="Augmenter l'expérience d'un an"
-        style={s.button}
+        className="bg-green-500 p-4 rounded-full shadow-md active:bg-green-600"
       >
-        <FontAwesome name="plus" size={16} color={"white"} />
+        <FontAwesome name="plus" size={16} color="white" />
       </TouchableOpacity>
+      <View className="w-10" />
       <TouchableOpacity
         onPress={() => setExperience(exp > 0 ? exp - 1 : 0)}
         accessibilityRole="button"
         accessibilityLabel="Réduire l'expérience d'un an"
-        style={s.button}
+        className="bg-red-500 p-4 rounded-full shadow-md active:bg-red-600"
       >
-        <FontAwesome name="minus" size={16} color={"white"} />
+        <FontAwesome name="minus" size={16} color="white" />
       </TouchableOpacity>
     </View>
   );
